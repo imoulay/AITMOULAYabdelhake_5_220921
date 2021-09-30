@@ -4,29 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="style.css">
-    <title>Orinoco</title>
+    <title>Façadia - Se connecter</title>
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand bg-dark">
-        <a class="navbar-brand" href="#">Orinoco</a>
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a href="index.html" class="nav-link">Accueil</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">Cours</a>
-            </li>
-        </ul>
-    </nav>
-
-
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+    <div class="sign-in-page">
+        <div class="sign-in-main-wrapper">
+            <h1 class="main-title">Façadia</h1>
+            <form class="sign-in-form" action="#" method="POST">
+                <h2 class="form-title">Veuillez vous connecter</h2>
+                
+                <div class="form-group">
+                    <label for="user-email">Votre addresse e-mail</label>
+                    <input name="user-email" id="user-email" type="email" placeholder="email@example.com">
+                    <span class="form-text-error hidden user-email-error-msg">L'e-mail n'est pas correct</span>
+                </div>
+                <div class="form-group">
+                    <label for="user-password">Votre mot de passe</label>
+                    <input name="user-password" id="user-password" type="password" placeholder="mot de passe">
+                    <span class="form-text-error hidden  user-password-error-msg">Le mot de passe n'est pas correct</span>
+                </div>
+                <div>
+                    <button class="submit-btn" type="submit">Se connecter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/js/pages/signIn.js"></script>
 </body>
 </html>
