@@ -1,12 +1,10 @@
+// INITIALISER UNE VARIABLE CONTENANT L'API
 const api = "http://localhost:3000/api/products";
 
-
+// ON APPELLE L'API POUR RECUPERER LES INFORMATIONS DES PRODUITS
   fetch(api)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-    })
+    .then(res => res.json())
+    // RECUPERER LES VALEURS ET LES INTEGRER DANS LE HTML
     .then((values) => {
         for(item of values) {
             document.querySelector("main .limitedWidthBlock").innerHTML += `<section class="items" id="items"> 
@@ -20,4 +18,5 @@ const api = "http://localhost:3000/api/products";
             </section>`;
         };
     })
-    .catch((err) => {});
+    // SI ERREUR RETOURNER ERREUR
+    .catch(err => console.log(err));
