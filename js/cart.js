@@ -2,12 +2,13 @@
 let totalPrice = 0;
 let totalArticle = 0;
 //RECUPERER LES ARTICLES DU LOCALSTORAGE
-let panier = JSON.parse(localStorage.getItem("panier"));
+const panier = JSON.parse(localStorage.getItem("panier"));
 //BOUCLER SUR PANIER POUR RECUPERER LA COULEUR ET LE NOMBRE DE PRODUIT
 for (product of panier) {
   let couleurArticle = product.choixCouleur;
   let nbArticle = product.nbArticle;
   totalArticle += product.nbArticle;
+  let prix = product.prix;
   //APPELER L'API POUR RECUPERER L'URL DU PRODUIT
   const api = "http://localhost:3000/api/products";
   const urlProduct = `${api}/${product.id}`;
@@ -37,20 +38,20 @@ for (product of panier) {
                 </div>
                 </div>
             </article>`;
-      totalPrice += Number(nbArticle) * Number(values.price);
+      totalPrice += nbArticle * prix;
       document.querySelector("#totalQuantity").innerHTML = `${totalArticle}`;
       document.querySelector("#totalPrice").innerHTML = `${totalPrice}`;
     })
     .catch((err) => console.log(err));
 }
 
-// SUPPRESSION D'ARTICLES DEPUIS LE PANIER
-let base = document.querySelector("#cart__items");
+// SUPPRESSION D'ARTICLES DEPUIS LE PANIER-----------------------------------------
+const base = document.querySelector("#cart__items");
 let btnSupprimer = ".deleteItem";
-console.log(btnSupprimer);
 
 base.addEventListener("click", function (event) {
   event.preventDefault();
+  //diriger l'ecoute  vert le boutton supprimer
   let closest = event.target.closest(btnSupprimer);
   if (closest && base.contains(closest)) {
     const artcileTag = event.target.parentNode.parentNode.parentNode.parentNode;
@@ -79,24 +80,49 @@ base.addEventListener("click", function (event) {
   }
 });
 // MISE À JOUR DES QUANTITES-------------------------------------------
-// let btnQuantite = ".itemQuantity";
-// base.addEventListener("change", function (event) {
-//   event.preventDefault();
-//   // find the closest parent of the event target that
-//   // matches the selector
-//   let closest = event.target.closest(btnQuantite);
-//   if (closest && base.contains(closest)) {
-//     const artcileTag = event.target.parentNode.parentNode.parentNode.parentNode;
-//     const quantite = artcileTag.querySelector(".itemQuantity").value;
-//     const prix = artcileTag.dataset.prix;
+let inputQuantite = ".itemQuantity";
+base.addEventListener("change", function (event) {
+  event.preventDefault();
+  //diriger l'ecoute  vert l'input
+  let closest = event.target.closest(inputQuantite);
+  console.log(closest);
+  //recuperer la valeur de la quantite
+  let valeurQuantite = closest.value;
+  console.log(valeurQuantite);
+  //precuperer le parent
+  let parent = closest.closest("article");
+  console.log(parent);
+  //recuperer les valeurs du parent
+  let id = parent.dataset.id;
+  let couleur = parent.dataset.couleur;
+  let prix = parent.dataset.prix;
 
-//     for (product of panier) {
-//       if (product.id === id && product.choixCouleur === couleur) {
-//         product;
-//       }
-//     }
-//   }
-// });
+  for (product of panier) {
+    if (product.id === id && product.choixCouleur === couleur) {
+      product.nbArticle = Number(valeurQuantite);
+    }
+  }
+  // mise à jour du localStorage
+  localStorage.setItem("panier", JSON.stringify(panier));
+  //---------------------------------------------------------------
+  totalArticle = 0;
+  totalPrice = 0;
+  JSON.parse(localStorage.getItem("panier"));
+  console.log(panier);
+  for (product of panier) {
+    let nbArticle = product.nbArticle;
+    totalArticle += nbArticle;
+    let prix = product.prix;
+    console.log(nbArticle);
+    console.log(totalArticle);
+    totalPrice += nbArticle * prix;
+  }
+
+  // mettre à jour les totaux
+
+  document.querySelector("#totalQuantity").textContent = `${totalArticle}`;
+  document.querySelector("#totalPrice").textContent = `${totalPrice}`;
+});
 
 //VALIDATION DU FORMULAIRE---------------------
 // const formulaire = document.getElementsByName("cart__order__form");

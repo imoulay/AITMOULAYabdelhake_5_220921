@@ -36,7 +36,9 @@ btnPanier.addEventListener("click", function (e) {
     id: idProduct,
     nbArticle: Number(nbArticle.value),
     choixCouleur: colorProduct.value,
+    prix: prix.innerHTML,
   };
+  console.log(prix);
   // INITIALISER LA VARIABLE ET VARIFIER SI LOCALSTORAGE EST EXISTANT
   let panier = JSON.parse(localStorage.getItem("panier")) ?? [];
   // SI LOCALSTORAGE EST VIDE, CREER UN NOUVEAU TABLEAU ET LE PLACER DANS LE LOCALSTORAGE
