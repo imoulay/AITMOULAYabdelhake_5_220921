@@ -39,8 +39,8 @@ for (product of panier) {
                 </div>
             </article>`;
       totalPrice += nbArticle * prix;
-      document.querySelector("#totalQuantity").innerHTML = `${totalArticle}`;
-      document.querySelector("#totalPrice").innerHTML = `${totalPrice}`;
+      document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
+      document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
     })
     .catch((err) => console.log(err));
 }
@@ -54,7 +54,7 @@ base.addEventListener("click", function (event) {
   //diriger l'ecoute  vert le boutton supprimer
   let closest = event.target.closest(btnSupprimer);
   if (closest && base.contains(closest)) {
-    const artcileTag = event.target.parentNode.parentNode.parentNode.parentNode;
+    const artcileTag = event.target.closest("article");
     // mettre à jour le loalStorage
     const id = artcileTag.dataset.id;
     const couleur = artcileTag.dataset.couleur;
@@ -70,8 +70,8 @@ base.addEventListener("click", function (event) {
         // mettre à jour les totaux
         totalArticle -= product.nbArticle;
         totalPrice -= product.nbArticle * prix;
-        document.querySelector("#totalQuantity").innerHTML = `${totalArticle}`;
-        document.querySelector("#totalPrice").innerHTML = `${totalPrice}`;
+        document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
+        document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
       }
     }
 
@@ -85,18 +85,14 @@ base.addEventListener("change", function (event) {
   event.preventDefault();
   //diriger l'ecoute  vert l'input
   let closest = event.target.closest(inputQuantite);
-  console.log(closest);
   //recuperer la valeur de la quantite
   let valeurQuantite = closest.value;
-  console.log(valeurQuantite);
   //precuperer le parent
   let parent = closest.closest("article");
-  console.log(parent);
   //recuperer les valeurs du parent
   let id = parent.dataset.id;
   let couleur = parent.dataset.couleur;
-  let prix = parent.dataset.prix;
-
+  //boucler sur le localStorage et changer les valeurs des quantités sous conditions
   for (product of panier) {
     if (product.id === id && product.choixCouleur === couleur) {
       product.nbArticle = Number(valeurQuantite);
@@ -108,52 +104,151 @@ base.addEventListener("change", function (event) {
   totalArticle = 0;
   totalPrice = 0;
   JSON.parse(localStorage.getItem("panier"));
-  console.log(panier);
   for (product of panier) {
     let nbArticle = product.nbArticle;
     totalArticle += nbArticle;
     let prix = product.prix;
-    console.log(nbArticle);
-    console.log(totalArticle);
     totalPrice += nbArticle * prix;
   }
-
   // mettre à jour les totaux
-
-  document.querySelector("#totalQuantity").textContent = `${totalArticle}`;
-  document.querySelector("#totalPrice").textContent = `${totalPrice}`;
+  document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
+  document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
 });
 
-//VALIDATION DU FORMULAIRE---------------------
-// const formulaire = document.getElementsByName("cart__order__form");
-// const btnCommander = document.getElementById("order");
+// VALIDATION DU FORMULAIRE-----------------------------------------
+let formulaire = document.querySelector(".cart__order__form");
+let btnCommander = document.getElementById("order");
 
-// btnCommander.addEventListener("click", function (e) {
-//   e.preventDefault();
-//   let prenom = document.getElementById("firstName");
-//   let prenomError = document.getElementsByName("firstNameErrorMsg");
-//   let nom = document.getElementById("lastName");
-//   let nomError = document.getElementsByName("lastNameErrorMsg");
-//   let adresse = document.getElementById("address");
-//   let ville = document.getElementById("city");
-//   let email = document.getElementById("email");
-//   let regexNom = /^[a-zA-Z-\s]{2,}+$/;
-//   let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-//   if (
-//     prenom.value == "" ||
-//     nom.value == "" ||
-//     adresse.value == "" ||
-//     ville.value == "" ||
-//     email.value == ""
-//   ) {
-//     e.preventDefault();
-//   } else if (myRegex.test(prenom.value) == false) {
-//     prenomError.innerHTML = "Champs invalide";
-//     prenomError.style.color = "red";
-//     e.preventDefault();
-//   } else if (myRegex.test(nom.value) == false) {
-//     nomError.innerHTML = "Champs invalide";
-//     nomError.style.color = "red";
-//     e.preventDefault();
-//   }
+let prenom = document.getElementById("firstName");
+let prenomError = document.getElementById("firstNameErrorMsg");
+let nom = document.getElementById("lastName");
+let nomError = document.getElementById("lastNameErrorMsg");
+let adresse = document.getElementById("address");
+let adresseError = document.getElementById("addressErrorMsg");
+let ville = document.getElementById("city");
+let villeError = document.getElementById("cityErrorMsg");
+let email = document.getElementById("email");
+let emailError = document.getElementById("emailErrorMsg");
+let emailRegex = new RegExp(
+  "^[a-zA-Z0-9_.+-]+@{1}[a-zA-Z0-9-]+.{1}[a-zA-Z0-9-.]+$"
+);
+let nomRegex = new RegExp("^[a-zA-Z.-]+$");
+
+//----------------------------------------------------------------------
+validPrenom();
+validNom();
+validAdresse();
+validVille();
+validEmail();
+
+function validPrenom() {
+  prenom.addEventListener("change", () => {
+    if (prenom.value == "") {
+      prenomError.innerHTML = "Veuillez saisir votre prenom";
+      prenom.focus();
+      return false;
+    } else if (
+      nomRegex.test(prenom.value) == false ||
+      prenom.value.length < 2
+    ) {
+      prenomError.innerHTML = "Veuillez saisir un prenom valide";
+      prenom.focus();
+      return false;
+    } else {
+      prenomError.innerHTML = "";
+      return true;
+    }
+  });
+}
+
+function validNom() {
+  nom.addEventListener("change", () => {
+    if (nom.value == "") {
+      nomError.innerHTML = "Veuillez saisir votre nom";
+      nom.focus();
+      return false;
+    } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
+      nomError.innerHTML = "Veuillez saisir un nom valide";
+      nom.focus();
+      return false;
+    } else {
+      nomError.innerHTML = "";
+      return true;
+    }
+  });
+}
+function validAdresse() {
+  adresse.addEventListener("change", () => {
+    if (adresse.value == "") {
+      adresseError.innerHTML = "Veuillez saisir votre adresse";
+      adresse.focus();
+      return false;
+    } else {
+      adresseError.innerHTML = "";
+      return true;
+    }
+  });
+}
+function validVille() {
+  ville.addEventListener("change", () => {
+    if (ville.value == "") {
+      villeError.innerHTML = "Veuillez saisir votre ville";
+      ville.focus();
+      return false;
+    } else {
+      villeError.innerHTML = "";
+      return true;
+    }
+  });
+}
+function validEmail() {
+  email.addEventListener("change", () => {
+    if (email.value == "") {
+      emailError.innerHTML = "Veuillez saisir votre email";
+      email.focus();
+      return false;
+    } else if (emailRegex.test(email.value) == false) {
+      emailError.innerHTML = "Adresse email invalide";
+      email.focus();
+      return false;
+    } else {
+      emailError.innerHTML = "";
+      return true;
+    }
+  });
+}
+//--------------------------------------------------------
+btnCommander.addEventListener("click", (e) => {
+  // e.preventDefault();
+  console.log(validPrenom);
+  if (
+    validPrenom() == true &&
+    validNom() == true &&
+    validAdresse() == true &&
+    validVille() == true &&
+    validEmail() == true
+  ) {
+    console.log("ok");
+    // const contact = [
+    //   prenom.value,
+    //   nom.value,
+    //   adresse.value,
+    //   ville.value,
+    //   email.value,
+    // ];
+    // console.log(contact);
+    // e.target.submit();
+  } else {
+    e.preventDefault();
+  }
+});
+//--------------------------------------------------------
+
+// fetch("http://localhost:3000/api/products/order", {
+//   method: "POST",
+//   Headers: {
+//     accept: "application/json",
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify("contact"),
 // });

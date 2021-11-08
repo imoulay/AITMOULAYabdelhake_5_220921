@@ -11,14 +11,18 @@ const prix = document.getElementById("price");
 const description = document.getElementById("description");
 const colorProduct = document.getElementById("colors");
 const nbArticle = document.getElementById("quantity");
+const image = document.querySelector(".item__img");
 //-----------------------------------------------------------------
-// APPELER L'API DU PRODUIT POUR RECUPERER TITRE, PRIX ET DESCRIPTION
+// APPELER L'API DU PRODUIT POUR RECUPERER SES INFORMATIONS
 fetch(urlProduct)
   .then((res) => res.json())
   .then((values) => {
     titre.innerHTML = values.name;
     prix.innerHTML = values.price;
     description.innerHTML = values.description;
+    imageUrl = values.imageUrl;
+    altTxt = values.altTxt;
+    image.innerHTML = `<img src="${imageUrl}" alt="${altTxt}" />`;
     //BOUCLER SUR COLORS POUR RECUPERER TOUTES LES COULEURS DU PRODUITS
     for (item of values.colors) {
       colorProduct.innerHTML += `<option value="${item}">${item}</option>`;
