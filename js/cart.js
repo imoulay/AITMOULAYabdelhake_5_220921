@@ -123,11 +123,6 @@ for (product of panier) {
   products.push(panierId);
 }
 
-let objetProduct = {
-  products: products,
-};
-console.log(objetProduct);
-
 // VALIDATION DU FORMULAIRE-----------------------------------------
 let formulaire = document.querySelector(".cart__order__form");
 let btnCommander = document.getElementById("order");
@@ -168,7 +163,6 @@ prenom.addEventListener("change", () => {
   } else {
     prenomError.innerHTML = "";
     contact.firstName = prenom.value;
-    console.log(contact);
   }
 });
 //--------------------------------------------------------------
@@ -220,27 +214,44 @@ email.addEventListener("change", () => {
   } else {
     emailError.innerHTML = "";
     contact.email = email.value;
-    console.log(contact);
   }
 });
 
 //------------------------------------------------------------
 btnCommander.addEventListener("click", (e) => {
   e.preventDefault();
-  let products = [];
-
-  for (product of panier) {
-    let panierId = product.id;
-    products.push(panierId);
+  if (
+    (prenomError.innerHTML =
+      "" ||
+      (prenom.value !== "" &&
+        nomError.innerHTML == "" &&
+        nom.value !== "" &&
+        adresseError.innerHTML == "" &&
+        adresse.value !== "" &&
+        villeError.innerHTML == "" &&
+        ville.value !== "" &&
+        emailError.innerHTML == "" &&
+        email.value !== ""))
+  ) {
+    //----------------------------------------------------------
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contact: {
+          firstName: prenom.value,
+          lastName: nom.value,
+          address: adresse.value,
+          city: ville.value,
+          email: email.value,
+        },
+        products,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((err) => console.log(err));
   }
-  console.log(JSON.stringify(contact, objetProduct));
-});
-
-fetch("http://localhost:3000/api/products/order", {
-  method: "POST",
-  Headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(contact, objetProduct),
 });
