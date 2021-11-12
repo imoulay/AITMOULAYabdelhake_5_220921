@@ -114,6 +114,19 @@ base.addEventListener("change", function (event) {
   document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
   document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
 });
+// CREATION TABLEAU PRODUITS-------------------------------------------
+
+let products = [];
+
+for (product of panier) {
+  let panierId = product.id;
+  products.push(panierId);
+}
+
+let objetProduct = {
+  products: products,
+};
+console.log(objetProduct);
 
 // VALIDATION DU FORMULAIRE-----------------------------------------
 let formulaire = document.querySelector(".cart__order__form");
@@ -135,120 +148,99 @@ let emailRegex = new RegExp(
 let nomRegex = new RegExp("^[a-zA-Z.-]+$");
 
 //----------------------------------------------------------------------
-validPrenom();
-validNom();
-validAdresse();
-validVille();
-validEmail();
+let contact = {
+  firstName: "",
+  lastName: "",
+  address: "",
+  city: "",
+  email: "",
+};
 
-function validPrenom() {
-  prenom.addEventListener("change", () => {
-    if (prenom.value == "") {
-      prenomError.innerHTML = "Veuillez saisir votre prenom";
-      prenom.focus();
-      return false;
-    } else if (
-      nomRegex.test(prenom.value) == false ||
-      prenom.value.length < 2
-    ) {
-      prenomError.innerHTML = "Veuillez saisir un prenom valide";
-      prenom.focus();
-      return false;
-    } else {
-      prenomError.innerHTML = "";
-      return true;
-    }
-  });
-}
-
-function validNom() {
-  nom.addEventListener("change", () => {
-    if (nom.value == "") {
-      nomError.innerHTML = "Veuillez saisir votre nom";
-      nom.focus();
-      return false;
-    } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
-      nomError.innerHTML = "Veuillez saisir un nom valide";
-      nom.focus();
-      return false;
-    } else {
-      nomError.innerHTML = "";
-      return true;
-    }
-  });
-}
-function validAdresse() {
-  adresse.addEventListener("change", () => {
-    if (adresse.value == "") {
-      adresseError.innerHTML = "Veuillez saisir votre adresse";
-      adresse.focus();
-      return false;
-    } else {
-      adresseError.innerHTML = "";
-      return true;
-    }
-  });
-}
-function validVille() {
-  ville.addEventListener("change", () => {
-    if (ville.value == "") {
-      villeError.innerHTML = "Veuillez saisir votre ville";
-      ville.focus();
-      return false;
-    } else {
-      villeError.innerHTML = "";
-      return true;
-    }
-  });
-}
-function validEmail() {
-  email.addEventListener("change", () => {
-    if (email.value == "") {
-      emailError.innerHTML = "Veuillez saisir votre email";
-      email.focus();
-      return false;
-    } else if (emailRegex.test(email.value) == false) {
-      emailError.innerHTML = "Adresse email invalide";
-      email.focus();
-      return false;
-    } else {
-      emailError.innerHTML = "";
-      return true;
-    }
-  });
-}
 //--------------------------------------------------------
-btnCommander.addEventListener("click", (e) => {
-  // e.preventDefault();
-  console.log(validPrenom);
-  if (
-    validPrenom() == true &&
-    validNom() == true &&
-    validAdresse() == true &&
-    validVille() == true &&
-    validEmail() == true
-  ) {
-    console.log("ok");
-    // const contact = [
-    //   prenom.value,
-    //   nom.value,
-    //   adresse.value,
-    //   ville.value,
-    //   email.value,
-    // ];
-    // console.log(contact);
-    // e.target.submit();
+
+prenom.addEventListener("change", () => {
+  if (prenom.value == "") {
+    prenomError.innerHTML = "Veuillez saisir votre prenom";
+    prenom.focus();
+  } else if (nomRegex.test(prenom.value) == false || prenom.value.length < 2) {
+    prenomError.innerHTML = "Veuillez saisir un prenom valide";
+    prenom.focus();
   } else {
-    e.preventDefault();
+    prenomError.innerHTML = "";
+    contact.firstName = prenom.value;
+    console.log(contact);
   }
 });
-//--------------------------------------------------------
+//--------------------------------------------------------------
+nom.addEventListener("change", () => {
+  if (nom.value == "") {
+    nomError.innerHTML = "Veuillez saisir votre nom";
+    nom.focus();
+  } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
+    nomError.innerHTML = "Veuillez saisir un nom valide";
+    nom.focus();
+  } else {
+    nomError.innerHTML = "";
+    contact.lastName = nom.value;
+  }
+});
+//--------------------------------------------------------------
+adresse.addEventListener("change", () => {
+  if (adresse.value == "") {
+    adresseError.innerHTML = "Veuillez saisir votre adresse";
+    adresse.focus();
+  } else if (adresse.value.length < 4) {
+    adresseError.innerHTML = "Veuillez saisir votre adresse valide";
+  } else {
+    adresseError.innerHTML = "";
+    contact.address = adresse.value;
+  }
+});
+//--------------------------------------------------------------
+ville.addEventListener("change", () => {
+  if (ville.value == "") {
+    villeError.innerHTML = "Veuillez saisir votre ville";
+    ville.focus();
+  } else if (ville.value.length < 2) {
+    villeError.innerHTML = "Veuillez saisir une ville valide";
+  } else {
+    villeError.innerHTML = "";
+    contact.city = ville.value;
+  }
+});
+//--------------------------------------------------------------
 
-// fetch("http://localhost:3000/api/products/order", {
-//   method: "POST",
-//   Headers: {
-//     accept: "application/json",
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify("contact"),
-// });
+email.addEventListener("change", () => {
+  if (email.value == "") {
+    emailError.innerHTML = "Veuillez saisir votre email";
+    email.focus();
+  } else if (emailRegex.test(email.value) == false) {
+    emailError.innerHTML = "Adresse email invalide";
+    email.focus();
+  } else {
+    emailError.innerHTML = "";
+    contact.email = email.value;
+    console.log(contact);
+  }
+});
+
+//------------------------------------------------------------
+btnCommander.addEventListener("click", (e) => {
+  e.preventDefault();
+  let products = [];
+
+  for (product of panier) {
+    let panierId = product.id;
+    products.push(panierId);
+  }
+  console.log(JSON.stringify(contact, objetProduct));
+});
+
+fetch("http://localhost:3000/api/products/order", {
+  method: "POST",
+  Headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(contact, objetProduct),
+});
