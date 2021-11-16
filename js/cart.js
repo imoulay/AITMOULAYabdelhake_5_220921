@@ -45,8 +45,26 @@ for (product of panier) {
     .catch((err) => console.log(err));
 }
 
-// SUPPRESSION D'ARTICLES DEPUIS LE PANIER-----------------------------------------
-const base = document.querySelector("#cart__items");
+// SUPPRESSION D'ARTICLES DEPUIS LE PANIER-------------------------
+
+// boutonSupprimer.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   let closetElement = element.closest(boutonSupprimer);
+//   let arrtileProduct = e.target.closest("article");
+
+//   if(){
+
+//   }
+// })
+
+//---------------------------------------------------------------
+
+const base = document.getElementById("cart__items");
+console.log(base);
+const boutonSupprimer = document.querySelectorAll(".deleteItem");
+const articleSection = document.querySelector(".cart__item");
+console.log(boutonSupprimer);
+// const closetElement = boutonSupprimer.closest("article");
 let btnSupprimer = ".deleteItem";
 
 base.addEventListener("click", function (event) {
@@ -54,7 +72,7 @@ base.addEventListener("click", function (event) {
   //diriger l'ecoute  vert le boutton supprimer
   let closest = event.target.closest(btnSupprimer);
   if (closest && base.contains(closest)) {
-    const artcileTag = event.target.closest("article");
+    let artcileTag = event.target.closest("article");
     // mettre à jour le loalStorage
     const id = artcileTag.dataset.id;
     const couleur = artcileTag.dataset.couleur;
@@ -79,12 +97,14 @@ base.addEventListener("click", function (event) {
     artcileTag.parentElement.removeChild(artcileTag);
   }
 });
+
 // MISE À JOUR DES QUANTITES-------------------------------------------
 let inputQuantite = ".itemQuantity";
 base.addEventListener("change", function (event) {
   event.preventDefault();
   //diriger l'ecoute  vert l'input
   let closest = event.target.closest(inputQuantite);
+  console.log(closest);
   //recuperer la valeur de la quantite
   let valeurQuantite = closest.value;
   //precuperer le parent
@@ -155,50 +175,50 @@ let contact = {
 
 prenom.addEventListener("change", () => {
   if (prenom.value == "") {
-    prenomError.innerHTML = "Veuillez saisir votre prenom";
+    prenomError.textContent = "Veuillez saisir votre prenom";
     prenom.focus();
   } else if (nomRegex.test(prenom.value) == false || prenom.value.length < 2) {
-    prenomError.innerHTML = "Veuillez saisir un prenom valide";
+    prenomError.textContent = "Veuillez saisir un prenom valide";
     prenom.focus();
   } else {
-    prenomError.innerHTML = "";
+    prenomError.textContent = "";
     contact.firstName = prenom.value;
   }
 });
 //--------------------------------------------------------------
 nom.addEventListener("change", () => {
   if (nom.value == "") {
-    nomError.innerHTML = "Veuillez saisir votre nom";
+    nomError.textContent = "Veuillez saisir votre nom";
     nom.focus();
   } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
-    nomError.innerHTML = "Veuillez saisir un nom valide";
+    nomError.textContent = "Veuillez saisir un nom valide";
     nom.focus();
   } else {
-    nomError.innerHTML = "";
+    nomError.textContent = "";
     contact.lastName = nom.value;
   }
 });
 //--------------------------------------------------------------
 adresse.addEventListener("change", () => {
   if (adresse.value == "") {
-    adresseError.innerHTML = "Veuillez saisir votre adresse";
+    adresseError.textContent = "Veuillez saisir votre adresse";
     adresse.focus();
   } else if (adresse.value.length < 4) {
-    adresseError.innerHTML = "Veuillez saisir votre adresse valide";
+    adresseError.textContent = "Veuillez saisir votre adresse valide";
   } else {
-    adresseError.innerHTML = "";
+    adresseError.textContent = "";
     contact.address = adresse.value;
   }
 });
 //--------------------------------------------------------------
 ville.addEventListener("change", () => {
   if (ville.value == "") {
-    villeError.innerHTML = "Veuillez saisir votre ville";
+    villeError.textContent = "Veuillez saisir votre ville";
     ville.focus();
   } else if (ville.value.length < 2) {
-    villeError.innerHTML = "Veuillez saisir une ville valide";
+    villeError.textContent = "Veuillez saisir une ville valide";
   } else {
-    villeError.innerHTML = "";
+    villeError.textContent = "";
     contact.city = ville.value;
   }
 });
@@ -206,13 +226,13 @@ ville.addEventListener("change", () => {
 
 email.addEventListener("change", () => {
   if (email.value == "") {
-    emailError.innerHTML = "Veuillez saisir votre email";
+    emailError.textContent = "Veuillez saisir votre email";
     email.focus();
   } else if (emailRegex.test(email.value) == false) {
-    emailError.innerHTML = "Adresse email invalide";
+    emailError.textContent = "Adresse email invalide";
     email.focus();
   } else {
-    emailError.innerHTML = "";
+    emailError.textContent = "";
     contact.email = email.value;
   }
 });
@@ -221,17 +241,15 @@ email.addEventListener("change", () => {
 btnCommander.addEventListener("click", (e) => {
   e.preventDefault();
   if (
-    (prenomError.innerHTML =
-      "" ||
-      (prenom.value !== "" &&
-        nomError.innerHTML == "" &&
-        nom.value !== "" &&
-        adresseError.innerHTML == "" &&
-        adresse.value !== "" &&
-        villeError.innerHTML == "" &&
-        ville.value !== "" &&
-        emailError.innerHTML == "" &&
-        email.value !== ""))
+    prenomError.textContent == "" &&
+    nomError.textContent == "" &&
+    nom.value !== "" &&
+    adresseError.textContent == "" &&
+    adresse.value !== "" &&
+    villeError.textContent == "" &&
+    ville.value !== "" &&
+    emailError.textContent == "" &&
+    email.value !== ""
   ) {
     //----------------------------------------------------------
     fetch("http://localhost:3000/api/products/order", {
@@ -251,7 +269,17 @@ btnCommander.addEventListener("click", (e) => {
         products,
       }),
     })
-      .then((response) => response.json())
+      .then((res) => res.json())
+      .then((values) => {
+        let orderId = values.orderId;
+        // document.location.replace(`confirmation.html?${orderId}`);
+        let numeroCommande = document.querySelector("#orderId");
+        console.log(values);
+        console.log(orderId);
+        console.log(numeroCommande);
+
+        // numeroCommande.innerText = orderId;
+      })
       .catch((err) => console.log(err));
   }
 });

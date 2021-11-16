@@ -5,7 +5,6 @@ const params = new URLSearchParams(document.location.search);
 const idProduct = params.get("_id");
 const urlProduct = `${api}/${idProduct}`;
 //-----------------------------------------------------------------
-//RECUPERATION DES INFORMATIONS DU PRODUIT A PARTIR DE L'ADRESSE API
 const titre = document.getElementById("title");
 const prix = document.getElementById("price");
 const description = document.getElementById("description");
@@ -42,13 +41,13 @@ btnPanier.addEventListener("click", function (e) {
     choixCouleur: colorProduct.value,
     prix: prix.innerHTML,
   };
-  console.log(prix);
   // INITIALISER LA VARIABLE ET VARIFIER SI LOCALSTORAGE EST EXISTANT
   let panier = JSON.parse(localStorage.getItem("panier")) ?? [];
   // SI LOCALSTORAGE EST VIDE, CREER UN NOUVEAU TABLEAU ET LE PLACER DANS LE LOCALSTORAGE
   if (panier.length == null) {
     panier.push(product);
     localStorage.setItem("panier", JSON.stringify(panier));
+    alert("Votre produit a bien été ajouté au panier");
     // SI LE NOMBRE D'ARTICLE ET DE O, ONT FAIT RIEN
   } else if (nbArticle.value == 0 || colorProduct.value == "") {
   } else {
@@ -60,11 +59,13 @@ btnPanier.addEventListener("click", function (e) {
       ) {
         // SI OUI INCREMENTER LE NOMBRE D'ARTICLE ET AJOUTER AU LOCALSTORAGE
         produit.nbArticle = Number(produit.nbArticle) + Number(nbArticle.value);
+        alert("Votre produit a bien été ajouté au panier");
         return localStorage.setItem("panier", JSON.stringify(panier));
       }
     }
     // SI L'ID ET LA COULEUR RECUPERE NE SONT PAS PRESENT, AJOUTER UN NOUVEAU TABLEAU ET PLACER DANS LE LOCALSTORAGE
     panier.push(product);
     localStorage.setItem("panier", JSON.stringify(panier));
+    alert("Votre produit a bien été ajouté au panier");
   }
 });
