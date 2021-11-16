@@ -272,13 +272,7 @@ btnCommander.addEventListener("click", (e) => {
       .then((res) => res.json())
       .then((values) => {
         let orderId = values.orderId;
-        // document.location.replace(`confirmation.html?${orderId}`);
-        let numeroCommande = document.querySelector("#orderId");
-        console.log(values);
-        console.log(orderId);
-        console.log(numeroCommande);
-
-        // numeroCommande.innerText = orderId;
+        document.location.replace(`confirmation.html?${orderId}`);
       })
       .catch((err) => console.log(err));
   }
