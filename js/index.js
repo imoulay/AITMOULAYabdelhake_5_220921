@@ -1,10 +1,10 @@
 // INITIALISER UNE VARIABLE CONTENANT L'API
 const api = "http://localhost:3000/api/products";
 
-// ON APPELLE L'API POUR RECUPERER LES INFORMATIONS DES PRODUITS
+// ON APPELLE L'API POUR RECUPERER LES DETAILS DES PRODUITS
 fetch(api)
   .then((res) => res.json())
-  // RECUPERER LES VALEURS ET LES INTEGRER DANS LE HTML
+  // RECUPERER LES DETAILS ET LES INTEGRER DANS LE HTML
   .then((values) => {
     for (item of values) {
       document.getElementById("items").innerHTML += ` 

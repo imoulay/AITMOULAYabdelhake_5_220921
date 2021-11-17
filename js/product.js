@@ -1,9 +1,7 @@
-const api = "http://localhost:3000/api/products";
-//-----------------------------------------------------------------
 // RECUPERATION DE L'ID PRODUIT A PARTIR DE L'ADRESSE URL
-const params = new URLSearchParams(document.location.search);
-const idProduct = params.get("_id");
-const urlProduct = `${api}/${idProduct}`;
+const api = "http://localhost:3000/api/products";
+const idProduit = window.location.search.replace("?_id=", "");
+const urlProduit = `${api}/${idProduit}`;
 //-----------------------------------------------------------------
 const titre = document.getElementById("title");
 const prix = document.getElementById("price");
@@ -12,8 +10,8 @@ const colorProduct = document.getElementById("colors");
 const nbArticle = document.getElementById("quantity");
 const image = document.querySelector(".item__img");
 //-----------------------------------------------------------------
-// APPELER L'API DU PRODUIT POUR RECUPERER SES INFORMATIONS
-fetch(urlProduct)
+// APPELER L'API DU PRODUIT POUR RECUPERER SES DETAILS
+fetch(urlProduit)
   .then((res) => res.json())
   .then((values) => {
     titre.innerHTML = values.name;
@@ -36,7 +34,7 @@ btnPanier.addEventListener("click", function (e) {
   e.preventDefault();
   // INITIALISE LA VARIABLE ET Y INJECTER LES INFORMATIONS DU PRODUIT
   let product = {
-    id: idProduct,
+    id: idProduit,
     nbArticle: Number(nbArticle.value),
     choixCouleur: colorProduct.value,
     prix: prix.innerHTML,
@@ -48,18 +46,21 @@ btnPanier.addEventListener("click", function (e) {
     panier.push(product);
     localStorage.setItem("panier", JSON.stringify(panier));
     alert("Votre produit a bien été ajouté au panier");
+    nbArticle.value = 0;
     // SI LE NOMBRE D'ARTICLE ET DE O, ONT FAIT RIEN
   } else if (nbArticle.value == 0 || colorProduct.value == "") {
+    e.preventDefault();
   } else {
     // SI LOCALSTORAGE N'EST PAS VIDE, VERIFIER SI L'ID ET LA COULEUR RECUPERE SONT DEJA PRESENTE
     for (produit of panier) {
       if (
-        produit.id == idProduct &&
+        produit.id == idProduit &&
         produit.choixCouleur == colorProduct.value
       ) {
         // SI OUI INCREMENTER LE NOMBRE D'ARTICLE ET AJOUTER AU LOCALSTORAGE
         produit.nbArticle = Number(produit.nbArticle) + Number(nbArticle.value);
         alert("Votre produit a bien été ajouté au panier");
+        nbArticle.value = 0;
         return localStorage.setItem("panier", JSON.stringify(panier));
       }
     }

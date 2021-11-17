@@ -44,27 +44,47 @@ for (product of panier) {
     })
     .catch((err) => console.log(err));
 }
-
-// SUPPRESSION D'ARTICLES DEPUIS LE PANIER-------------------------
-
-// boutonSupprimer.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   let closetElement = element.closest(boutonSupprimer);
-//   let arrtileProduct = e.target.closest("article");
-
-//   if(){
-
-//   }
-// })
+//----------------------------------------------------------------
+window.onload = () => {
+  let inputsQuantite = document.querySelectorAll(".itemQuantity");
+  console.log(inputsQuantite);
+  for (input of inputsQuantite) {
+    let parent = input.closest("article");
+    let id = parent.dataset.id;
+    let couleur = parent.dataset.couleur;
+    let inputValeur = input.value;
+    input.onchange = (e) => {
+      let inputSelectValue = e.target.value;
+      console.log(inputSelectValue);
+      for (product of panier) {
+        if (product.id === id && product.choixCouleur === couleur) {
+          product.nbArticle = Number(inputSelectValue);
+        }
+      }
+      // mise à jour du localStorage
+      localStorage.setItem("panier", JSON.stringify(panier));
+      totalArticle = 0;
+      totalPrice = 0;
+      JSON.parse(localStorage.getItem("panier"));
+      for (product of panier) {
+        let nbArticle = product.nbArticle;
+        totalArticle += nbArticle;
+        let prix = product.prix;
+        totalPrice += nbArticle * prix;
+      }
+      // mettre à jour les totaux
+      document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
+      document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
+    };
+  }
+};
 
 //---------------------------------------------------------------
+// SUPPRESSION D'ARTICLES DEPUIS LE PANIER -------------------------
 
 const base = document.getElementById("cart__items");
-console.log(base);
 const boutonSupprimer = document.querySelectorAll(".deleteItem");
 const articleSection = document.querySelector(".cart__item");
-console.log(boutonSupprimer);
-// const closetElement = boutonSupprimer.closest("article");
 let btnSupprimer = ".deleteItem";
 
 base.addEventListener("click", function (event) {
@@ -99,41 +119,41 @@ base.addEventListener("click", function (event) {
 });
 
 // MISE À JOUR DES QUANTITES-------------------------------------------
-let inputQuantite = ".itemQuantity";
-base.addEventListener("change", function (event) {
-  event.preventDefault();
-  //diriger l'ecoute  vert l'input
-  let closest = event.target.closest(inputQuantite);
-  console.log(closest);
-  //recuperer la valeur de la quantite
-  let valeurQuantite = closest.value;
-  //precuperer le parent
-  let parent = closest.closest("article");
-  //recuperer les valeurs du parent
-  let id = parent.dataset.id;
-  let couleur = parent.dataset.couleur;
-  //boucler sur le localStorage et changer les valeurs des quantités sous conditions
-  for (product of panier) {
-    if (product.id === id && product.choixCouleur === couleur) {
-      product.nbArticle = Number(valeurQuantite);
-    }
-  }
-  // mise à jour du localStorage
-  localStorage.setItem("panier", JSON.stringify(panier));
-  //---------------------------------------------------------------
-  totalArticle = 0;
-  totalPrice = 0;
-  JSON.parse(localStorage.getItem("panier"));
-  for (product of panier) {
-    let nbArticle = product.nbArticle;
-    totalArticle += nbArticle;
-    let prix = product.prix;
-    totalPrice += nbArticle * prix;
-  }
-  // mettre à jour les totaux
-  document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
-  document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
-});
+// let inputQuantite = ".itemQuantity";
+// base.addEventListener("change", function (event) {
+//   event.preventDefault();
+//   //diriger l'ecoute  vert l'input
+//   let closest = event.target.closest(inputQuantite);
+//   console.log(closest);
+//   //recuperer la valeur de la quantite
+//   let valeurQuantite = closest.value;
+//   //precuperer le parent
+//   let parent = closest.closest("article");
+//   //recuperer les valeurs du parent
+//   let id = parent.dataset.id;
+//   let couleur = parent.dataset.couleur;
+//   //boucler sur le localStorage et changer les valeurs des quantités sous conditions
+//   for (product of panier) {
+//     if (product.id === id && product.choixCouleur === couleur) {
+//       product.nbArticle = Number(valeurQuantite);
+//     }
+//   }
+//   // mise à jour du localStorage
+//   localStorage.setItem("panier", JSON.stringify(panier));
+//   //---------------------------------------------------------------
+//   totalArticle = 0;
+//   totalPrice = 0;
+//   JSON.parse(localStorage.getItem("panier"));
+//   for (product of panier) {
+//     let nbArticle = product.nbArticle;
+//     totalArticle += nbArticle;
+//     let prix = product.prix;
+//     totalPrice += nbArticle * prix;
+//   }
+//   // mettre à jour les totaux
+//   document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
+//   document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
+// });
 // CREATION TABLEAU PRODUITS-------------------------------------------
 
 let products = [];
@@ -162,7 +182,7 @@ let emailRegex = new RegExp(
 );
 let nomRegex = new RegExp("^[a-zA-Z.-]+$");
 
-//----------------------------------------------------------------------
+//----------------------------------------------------------
 let contact = {
   firstName: "",
   lastName: "",
