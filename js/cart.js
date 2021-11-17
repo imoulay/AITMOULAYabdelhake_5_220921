@@ -44,18 +44,17 @@ for (product of panier) {
     })
     .catch((err) => console.log(err));
 }
-//----------------------------------------------------------------
+/*--------------------------------------------------------------
+    -----------  MISE À JOUR DES QUANTITES  --------------
+--------------------------------------------------------------*/
 window.onload = () => {
   let inputsQuantite = document.querySelectorAll(".itemQuantity");
-  console.log(inputsQuantite);
   for (input of inputsQuantite) {
     let parent = input.closest("article");
     let id = parent.dataset.id;
     let couleur = parent.dataset.couleur;
-    let inputValeur = input.value;
     input.onchange = (e) => {
       let inputSelectValue = e.target.value;
-      console.log(inputSelectValue);
       for (product of panier) {
         if (product.id === id && product.choixCouleur === couleur) {
           product.nbArticle = Number(inputSelectValue);
@@ -77,83 +76,39 @@ window.onload = () => {
       document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
     };
   }
+  /*--------------------------------------------------------------
+       -----------  SUPPRESSION D'ARTICLES  ------------------
+  --------------------------------------------------------------*/
+  const boutonSupprimer = document.querySelectorAll(".deleteItem");
+  for (btnSupp of boutonSupprimer) {
+    let parent = btnSupp.closest("article");
+    let id = parent.dataset.id;
+    let couleur = parent.dataset.couleur;
+    let prix = parent.dataset.prix;
+    btnSupp.onclick = () => {
+      for (product of panier) {
+        console.log(product);
+        if (product.id === id && product.choixCouleur === couleur) {
+          const index = panier.indexOf(product);
+          panier.splice(index, 1);
+
+          // mise à jour du localStorage
+          localStorage.setItem("panier", JSON.stringify(panier));
+
+          // mettre à jour les totaux
+          totalArticle -= product.nbArticle;
+          totalPrice -= product.nbArticle * prix;
+          document.getElementById(
+            "totalQuantity"
+          ).innerHTML = `${totalArticle}`;
+          document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
+        }
+      }
+      parent.parentElement.removeChild(parent);
+    };
+  }
 };
 
-//---------------------------------------------------------------
-// SUPPRESSION D'ARTICLES DEPUIS LE PANIER -------------------------
-
-const base = document.getElementById("cart__items");
-const boutonSupprimer = document.querySelectorAll(".deleteItem");
-const articleSection = document.querySelector(".cart__item");
-let btnSupprimer = ".deleteItem";
-
-base.addEventListener("click", function (event) {
-  event.preventDefault();
-  //diriger l'ecoute  vert le boutton supprimer
-  let closest = event.target.closest(btnSupprimer);
-  if (closest && base.contains(closest)) {
-    let artcileTag = event.target.closest("article");
-    // mettre à jour le loalStorage
-    const id = artcileTag.dataset.id;
-    const couleur = artcileTag.dataset.couleur;
-    const prix = artcileTag.dataset.prix;
-    for (product of panier) {
-      if (product.id === id && product.choixCouleur === couleur) {
-        const index = panier.indexOf(product);
-        panier.splice(index, 1);
-
-        // mise à jour du localStorage
-        localStorage.setItem("panier", JSON.stringify(panier));
-
-        // mettre à jour les totaux
-        totalArticle -= product.nbArticle;
-        totalPrice -= product.nbArticle * prix;
-        document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
-        document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
-      }
-    }
-
-    // supprimer l'élément
-    artcileTag.parentElement.removeChild(artcileTag);
-  }
-});
-
-// MISE À JOUR DES QUANTITES-------------------------------------------
-// let inputQuantite = ".itemQuantity";
-// base.addEventListener("change", function (event) {
-//   event.preventDefault();
-//   //diriger l'ecoute  vert l'input
-//   let closest = event.target.closest(inputQuantite);
-//   console.log(closest);
-//   //recuperer la valeur de la quantite
-//   let valeurQuantite = closest.value;
-//   //precuperer le parent
-//   let parent = closest.closest("article");
-//   //recuperer les valeurs du parent
-//   let id = parent.dataset.id;
-//   let couleur = parent.dataset.couleur;
-//   //boucler sur le localStorage et changer les valeurs des quantités sous conditions
-//   for (product of panier) {
-//     if (product.id === id && product.choixCouleur === couleur) {
-//       product.nbArticle = Number(valeurQuantite);
-//     }
-//   }
-//   // mise à jour du localStorage
-//   localStorage.setItem("panier", JSON.stringify(panier));
-//   //---------------------------------------------------------------
-//   totalArticle = 0;
-//   totalPrice = 0;
-//   JSON.parse(localStorage.getItem("panier"));
-//   for (product of panier) {
-//     let nbArticle = product.nbArticle;
-//     totalArticle += nbArticle;
-//     let prix = product.prix;
-//     totalPrice += nbArticle * prix;
-//   }
-//   // mettre à jour les totaux
-//   document.getElementById("totalQuantity").innerHTML = `${totalArticle}`;
-//   document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
-// });
 // CREATION TABLEAU PRODUITS-------------------------------------------
 
 let products = [];
