@@ -1,6 +1,9 @@
 //DECLARER VARIABLES
 let totalPrice = 0;
 let totalArticle = 0;
+/*-----------------------------------------------------------------
+                AFFICHER LES PRODUITS DU LOCALSTORAGE
+ ------------------------------------------------------------------*/
 //RECUPERER LES ARTICLES DU LOCALSTORAGE
 const panier = JSON.parse(localStorage.getItem("panier"));
 //BOUCLER SUR PANIER POUR RECUPERER LA COULEUR ET LE NOMBRE DE PRODUIT
@@ -95,7 +98,7 @@ window.onload = () => {
           // mise à jour du localStorage
           localStorage.setItem("panier", JSON.stringify(panier));
 
-          // mettre à jour les totaux
+          // mise à jour des totaux
           totalArticle -= product.nbArticle;
           totalPrice -= product.nbArticle * prix;
           document.getElementById(
@@ -104,6 +107,7 @@ window.onload = () => {
           document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
         }
       }
+      // Suppression de l'element HTML (article)
       parent.parentElement.removeChild(parent);
     };
   }
@@ -117,8 +121,9 @@ for (product of panier) {
   let panierId = product.id;
   products.push(panierId);
 }
-
-// VALIDATION DU FORMULAIRE-----------------------------------------
+/*--------------------------------------------------------------
+       -----------  VALIDATION DU FORMULAIRE  ------------------
+  --------------------------------------------------------------*/
 let formulaire = document.querySelector(".cart__order__form");
 let btnCommander = document.getElementById("order");
 
@@ -135,7 +140,7 @@ let emailError = document.getElementById("emailErrorMsg");
 let emailRegex = new RegExp(
   "^[a-zA-Z0-9_.+-]+@{1}[a-zA-Z0-9-]+.{1}[a-zA-Z0-9-.]+$"
 );
-let nomRegex = new RegExp("^[a-zA-Z.-]+$");
+let nomRegex = new RegExp("^[a-zA-Z. -]+$");
 
 //----------------------------------------------------------
 let contact = {
