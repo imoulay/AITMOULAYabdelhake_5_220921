@@ -25,14 +25,13 @@ fetch(urlProduit)
       colorProduct.innerHTML += `<option value="${item}">${item}</option>`;
     }
   })
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("Pas de réponse du serveur"));
 //-----------------------------------------------------------------
 // RECUPERER LE BOUTON AJOUTER AU PANIER
 const btnPanier = document.getElementById("addToCart");
-// ECOUTER LE BOUTON AJOUTER AU PANIER
-btnPanier.addEventListener("click", function (e) {
+
+const ajouterAuPanier = (e) => {
   e.preventDefault();
-  // INITIALISE LA VARIABLE ET Y INJECTER LES INFORMATIONS DU PRODUIT
   let product = {
     id: idProduit,
     nbArticle: Number(nbArticle.value),
@@ -50,6 +49,7 @@ btnPanier.addEventListener("click", function (e) {
     // SI LE NOMBRE D'ARTICLE ET DE O, ONT FAIT RIEN
   } else if (nbArticle.value == 0 || colorProduct.value == "") {
     e.preventDefault();
+    alert("Veuillez choisir une couleur, et un nombre d'article");
   } else {
     // SI LOCALSTORAGE N'EST PAS VIDE, VERIFIER SI L'ID ET LA COULEUR RECUPERE SONT DEJA PRESENTE
     for (produit of panier) {
@@ -69,4 +69,6 @@ btnPanier.addEventListener("click", function (e) {
     localStorage.setItem("panier", JSON.stringify(panier));
     alert("Votre produit a bien été ajouté au panier");
   }
-});
+};
+// ECOUTER LE BOUTON AJOUTER AU PANIER
+btnPanier.addEventListener("click", ajouterAuPanier);

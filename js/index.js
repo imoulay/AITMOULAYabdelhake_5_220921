@@ -18,4 +18,4 @@ fetch(api)
     }
   })
   // SI ERREUR RETOURNER ERREUR
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("Pas de réponse du serveur"));

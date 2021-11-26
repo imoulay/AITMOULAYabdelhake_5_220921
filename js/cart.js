@@ -112,9 +112,9 @@ window.onload = () => {
     };
   }
 };
-
-// CREATION TABLEAU PRODUITS-------------------------------------------
-
+/**
+ * CREATION DU TABLEAU PRODUITS A PARTIR DU LOCAL STORAGE
+ */
 let products = [];
 
 for (product of panier) {
@@ -124,25 +124,27 @@ for (product of panier) {
 /*--------------------------------------------------------------
        -----------  VALIDATION DU FORMULAIRE  ------------------
   --------------------------------------------------------------*/
-let formulaire = document.querySelector(".cart__order__form");
-let btnCommander = document.getElementById("order");
-
-let prenom = document.getElementById("firstName");
-let prenomError = document.getElementById("firstNameErrorMsg");
-let nom = document.getElementById("lastName");
-let nomError = document.getElementById("lastNameErrorMsg");
-let adresse = document.getElementById("address");
-let adresseError = document.getElementById("addressErrorMsg");
-let ville = document.getElementById("city");
-let villeError = document.getElementById("cityErrorMsg");
-let email = document.getElementById("email");
-let emailError = document.getElementById("emailErrorMsg");
-let emailRegex = new RegExp(
+/**
+ * RECUPERATION DES ELEMENT HTML DU FORMULAIRE
+ */
+const prenom = document.getElementById("firstName");
+const prenomError = document.getElementById("firstNameErrorMsg");
+const nom = document.getElementById("lastName");
+const nomError = document.getElementById("lastNameErrorMsg");
+const adresse = document.getElementById("address");
+const adresseError = document.getElementById("addressErrorMsg");
+const ville = document.getElementById("city");
+const villeError = document.getElementById("cityErrorMsg");
+const email = document.getElementById("email");
+const emailError = document.getElementById("emailErrorMsg");
+const emailRegex = new RegExp(
   "^[a-zA-Z0-9_.+-]+@{1}[a-zA-Z0-9-]+.{1}[a-zA-Z0-9-.]+$"
 );
-let nomRegex = new RegExp("^[a-zA-Z. -]+$");
-
-//----------------------------------------------------------
+const nomRegex = new RegExp("^[a-zA-Z. -]+$");
+const btnCommander = document.getElementById("order");
+/**
+ * CREATION DE L'OBJET CONTACT POUR RECUPERER LES DONNES DU FORMULAIRE
+ */
 let contact = {
   firstName: "",
   lastName: "",
@@ -150,9 +152,9 @@ let contact = {
   city: "",
   email: "",
 };
-
-//--------------------------------------------------------
-
+/**
+ * ECOUTE DES ELEMENTS DU FORMULAIRE
+ */
 prenom.addEventListener("change", () => {
   if (prenom.value == "") {
     prenomError.textContent = "Veuillez saisir votre prenom";
@@ -218,6 +220,9 @@ email.addEventListener("change", () => {
 });
 
 //------------------------------------------------------------
+/**
+ * ENVOIE DES ELEMENTS DU FORMULAIRE
+ */
 btnCommander.addEventListener("click", (e) => {
   e.preventDefault();
   if (
@@ -250,10 +255,11 @@ btnCommander.addEventListener("click", (e) => {
       }),
     })
       .then((res) => res.json())
+      //------------------------------------------------------------
       .then((values) => {
         let orderId = values.orderId;
-        document.location.replace(`confirmation.html?${orderId}`);
+        document.location.replace(`confirmation.html?id=${orderId}`);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Pas de réponse du serveur"));
   }
 });
