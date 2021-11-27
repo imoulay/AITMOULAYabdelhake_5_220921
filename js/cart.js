@@ -155,69 +155,146 @@ let contact = {
 /**
  * ECOUTE DES ELEMENTS DU FORMULAIRE
  */
-prenom.addEventListener("change", () => {
-  if (prenom.value == "") {
-    prenomError.textContent = "Veuillez saisir votre prenom";
-    prenom.focus();
-  } else if (nomRegex.test(prenom.value) == false || prenom.value.length < 2) {
-    prenomError.textContent = "Veuillez saisir un prenom valide";
-    prenom.focus();
-  } else {
-    prenomError.textContent = "";
-    contact.firstName = prenom.value;
-  }
-});
-//--------------------------------------------------------------
-nom.addEventListener("change", () => {
-  if (nom.value == "") {
-    nomError.textContent = "Veuillez saisir votre nom";
-    nom.focus();
-  } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
-    nomError.textContent = "Veuillez saisir un nom valide";
-    nom.focus();
-  } else {
-    nomError.textContent = "";
-    contact.lastName = nom.value;
-  }
-});
-//--------------------------------------------------------------
-adresse.addEventListener("change", () => {
-  if (adresse.value == "") {
-    adresseError.textContent = "Veuillez saisir votre adresse";
-    adresse.focus();
-  } else if (adresse.value.length < 4) {
-    adresseError.textContent = "Veuillez saisir votre adresse valide";
-  } else {
-    adresseError.textContent = "";
-    contact.address = adresse.value;
-  }
-});
-//--------------------------------------------------------------
-ville.addEventListener("change", () => {
-  if (ville.value == "") {
-    villeError.textContent = "Veuillez saisir votre ville";
-    ville.focus();
-  } else if (ville.value.length < 2) {
-    villeError.textContent = "Veuillez saisir une ville valide";
-  } else {
-    villeError.textContent = "";
-    contact.city = ville.value;
-  }
-});
-//--------------------------------------------------------------
 
-email.addEventListener("change", () => {
-  if (email.value == "") {
-    emailError.textContent = "Veuillez saisir votre email";
-    email.focus();
-  } else if (emailRegex.test(email.value) == false) {
-    emailError.textContent = "Adresse email invalide";
-    email.focus();
-  } else {
-    emailError.textContent = "";
-    contact.email = email.value;
-  }
-});
+window.onload = () => {
+  setupListener();
+};
+
+const setupListener = () => {
+  prenom.addEventListener("change", listenerFunction.prenomVerif);
+  nom.addEventListener("change", listenerFunction.nomVerif);
+  adresse.addEventListener("change", listenerFunction.adresseVerif);
+  ville.addEventListener("change", listenerFunction.villeVerif);
+  email.addEventListener("change", listenerFunction.emailVerif);
+};
+
+const listenerFunction = {
+  prenomVerif: () => {
+    if (prenom.value == "") {
+      prenomError.textContent = "Veuillez saisir votre prenom";
+      prenom.focus();
+    } else if (
+      nomRegex.test(prenom.value) == false ||
+      prenom.value.length < 2
+    ) {
+      prenomError.textContent = "Veuillez saisir un prenom valide";
+      prenom.focus();
+    } else {
+      prenomError.textContent = "";
+      contact.firstName = prenom.value;
+    }
+  },
+  nomVerif: () => {
+    if (nom.value == "") {
+      nomError.textContent = "Veuillez saisir votre nom";
+      nom.focus();
+    } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
+      nomError.textContent = "Veuillez saisir un nom valide";
+      nom.focus();
+    } else {
+      nomError.textContent = "";
+      contact.lastName = nom.value;
+    }
+  },
+  adresseVerif: () => {
+    if (adresse.value == "") {
+      adresseError.textContent = "Veuillez saisir votre adresse";
+      adresse.focus();
+    } else if (adresse.value.length < 4) {
+      adresseError.textContent = "Veuillez saisir votre adresse valide";
+    } else {
+      adresseError.textContent = "";
+      contact.address = adresse.value;
+    }
+  },
+  villeVerif: () => {
+    if (ville.value == "") {
+      villeError.textContent = "Veuillez saisir votre ville";
+      ville.focus();
+    } else if (ville.value.length < 2) {
+      villeError.textContent = "Veuillez saisir une ville valide";
+    } else {
+      villeError.textContent = "";
+      contact.city = ville.value;
+    }
+  },
+  emailVerif: () => {
+    if (email.value == "") {
+      emailError.textContent = "Veuillez saisir votre email";
+      email.focus();
+    } else if (emailRegex.test(email.value) == false) {
+      emailError.textContent = "Adresse email invalide";
+      email.focus();
+    } else {
+      emailError.textContent = "";
+      contact.email = email.value;
+    }
+  },
+};
+
+// prenom.addEventListener("change", () => {
+//   if (prenom.value == "") {
+//     prenomError.textContent = "Veuillez saisir votre prenom";
+//     prenom.focus();
+//   } else if (nomRegex.test(prenom.value) == false || prenom.value.length < 2) {
+//     prenomError.textContent = "Veuillez saisir un prenom valide";
+//     prenom.focus();
+//   } else {
+//     prenomError.textContent = "";
+//     contact.firstName = prenom.value;
+//   }
+// });
+// //--------------------------------------------------------------
+// nom.addEventListener("change", () => {
+//   if (nom.value == "") {
+//     nomError.textContent = "Veuillez saisir votre nom";
+//     nom.focus();
+//   } else if (nomRegex.test(nom.value) == false || nom.value.length < 2) {
+//     nomError.textContent = "Veuillez saisir un nom valide";
+//     nom.focus();
+//   } else {
+//     nomError.textContent = "";
+//     contact.lastName = nom.value;
+//   }
+// });
+// //--------------------------------------------------------------
+// adresse.addEventListener("change", () => {
+//   if (adresse.value == "") {
+//     adresseError.textContent = "Veuillez saisir votre adresse";
+//     adresse.focus();
+//   } else if (adresse.value.length < 4) {
+//     adresseError.textContent = "Veuillez saisir votre adresse valide";
+//   } else {
+//     adresseError.textContent = "";
+//     contact.address = adresse.value;
+//   }
+// });
+// //--------------------------------------------------------------
+// ville.addEventListener("change", () => {
+//   if (ville.value == "") {
+//     villeError.textContent = "Veuillez saisir votre ville";
+//     ville.focus();
+//   } else if (ville.value.length < 2) {
+//     villeError.textContent = "Veuillez saisir une ville valide";
+//   } else {
+//     villeError.textContent = "";
+//     contact.city = ville.value;
+//   }
+// });
+// //--------------------------------------------------------------
+
+// email.addEventListener("change", () => {
+//   if (email.value == "") {
+//     emailError.textContent = "Veuillez saisir votre email";
+//     email.focus();
+//   } else if (emailRegex.test(email.value) == false) {
+//     emailError.textContent = "Adresse email invalide";
+//     email.focus();
+//   } else {
+//     emailError.textContent = "";
+//     contact.email = email.value;
+//   }
+// });
 
 //------------------------------------------------------------
 /**
